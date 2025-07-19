@@ -4,7 +4,7 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif, Geneva, Tahoma,
     sans-serif;
   font-weight: 100;
-  max-width: 1920px;
+  max-width: 3840px;
   max-height: 1080px;
   overflow: hidden;
 }
@@ -15,7 +15,12 @@ body {
   margin: 1rem;
 }
 
-.sidebar {
+.header {
+  display: flex;
+  gap: 1rem;
+}
+
+.topbar, .todo {
   background-color: #004052;
   padding: 1rem;
   border-radius: 1rem;

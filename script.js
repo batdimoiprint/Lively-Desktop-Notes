@@ -1,4 +1,4 @@
-function addNotes(titleText, paragraphText) {
+function displayNotes(titleText, paragraphText) {
   const cards = document.createElement("div");
   cards.className = "cards";
 
@@ -22,8 +22,38 @@ function addNotes(titleText, paragraphText) {
   document.getElementById("cards").appendChild(cards);
 }
 
+
 document.getElementById("addBtn").addEventListener("click", () => {
   const titleInput = document.getElementById("titleInput").value;
-  const paragraph = document.getElementById("paragraphInput").value;
-  addNotes(titleInput, paragraph);
+  const bodyInput = document.getElementById("paragraphInput").value;
+  // console.log(titleInput,bodyInput);
+  
+  addNotes(titleInput,bodyInput)
+
+
+ 
 });
+
+fetch("http://localhost:3000/api/notes")
+  .then((res) => res.json())
+  .then((notesArray) => {
+    const allNotes = [...notesArray];
+    allNotes.forEach((note) => {
+      displayNotes(note.title, note.body);
+      console.log(note.id, note.title, note.body)
+    });
+  });
+
+ 
+  function addNotes(titleInput,bodyInput) {
+  fetch("http://localhost:3000/api/notes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title: titleInput, body: bodyInput }),
+  })
+ 
+  ;
+  // console.log(`Clicked`);
+}
