@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Array Practice</title>
+  </head>
+  <body style="background-color: gray">
+    <p id="display"></p>
+  </body>
+  <script>
+
+ 
+    // Filtering the id that we dont need
+    // const array = [1, 2, 3];
+    // let idDelete = 2;
+    // document.getElementById("display").innerHTML = array.filter((id) => {
+    //   return id !== idDelete;
+    // });
+
+    // But now we need to filter an object and inside object's id
+    const objArray = [
+      { id: 1, text: "Kenny" },
+      { id: 2, text: "aughh aughh" },
+      { id: 3, text: "lmaoo" },
+      { id: 4, text: "iowanthisshi" },
+    ];
+
+    objArray[0].id
+
+    let idDelete = 3
+
+    // So basically arrays are objects by itself
+    document.getElementById("display").innerHTML = objArray.filter((obj) => {
+        return obj.id !== idDelete
+    })
+
+    // console.log(objArray[0].text);
+    
+
+
+  </script>
+</html>

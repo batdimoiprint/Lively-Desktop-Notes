@@ -1,9 +1,6 @@
 ### Get all notes
 GET http://localhost:3000/api/notes
 Accept: application/json
-
-###
-
 ### Add a new note
 POST http://localhost:3000/api/notes
 Content-Type: application/json
@@ -11,4 +8,12 @@ Content-Type: application/json
 {
   "title": "OKs naman ah bat may error don lmao",
   "body": "Tanginang body yan"
+}
+
+### Delete a note
+DELETE http://localhost:3000/api/notes
+Content-Type: application/json
+
+{
+  "id": "1753026533272"
 }

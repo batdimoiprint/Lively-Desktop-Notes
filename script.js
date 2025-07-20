@@ -11,7 +11,24 @@ async function fetchNotes() {
   }
 }
 
-fetchNotes();
+
+
+
+async function deleteNotes(idInput) {
+  try {
+    let data = await fetch("http://127.0.0.1:3000/api/notes", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json"},
+      body: JSON.stringify({
+          id : idInput
+      })
+    });
+    let response = await data.json()
+    console.log(response)
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 async function postNotes() {
   try {
@@ -20,11 +37,11 @@ async function postNotes() {
 
     let data = await fetch("http://127.0.0.1:3000/api/notes", {
       method: "POST",
-      header: { "Content-Type": "application/json" },
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         title: title,
         body: body,
-      }),
+      })
     });
     let response = data.json()
     console.log(response);
@@ -48,7 +65,8 @@ function displayNotes(titleInput, bodyInput, idInput) {
   const button = document.createElement("btn");
   button.className = "btn-close";
   button.addEventListener("click", () => {
-    cards.remove();
+    deleteNotes(idInput)
+    console.log(idInput)
   });
   button.textContent = "x";
 
@@ -58,3 +76,5 @@ function displayNotes(titleInput, bodyInput, idInput) {
   cards.appendChild(paragraph);
   document.getElementById("cards").appendChild(cards);
 }
+
+fetchNotes();
