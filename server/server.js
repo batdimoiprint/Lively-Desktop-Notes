@@ -8,12 +8,14 @@ const server = http.createServer((req, res) => {
 
   // Handling Routings for Get and Post
 
+  // Entry point
   if (req.method === "GET" && req.url === "/") {
     log(`Welcome`);
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end("Welcome to Nodejs server");
   }
 
+  // Get all notes
   if (req.method === "GET" && req.url === "/api/notes") {
     fs.readFile("./server/notes.txt", "utf-8", (err, data) => {
       if (err) {
@@ -28,6 +30,7 @@ const server = http.createServer((req, res) => {
     });
   }
 
+  //Post a note
   if (req.method === "POST" && req.url === "/api/notes") {
     let body = "";
     req.on("data", (chunk) => {
@@ -70,6 +73,8 @@ const server = http.createServer((req, res) => {
     });
   }
 });
+
+
 server.listen(port, () => {
   log(`Server running on port ${port}`);
 });

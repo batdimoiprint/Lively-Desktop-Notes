@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fetch Sample</title>
+  </head>
+  <body style="background-color: gray">
+    <p id="fetch"></p>
+    <button onclick="get()">Fetch</button><br /><br />
+
+    <input type="text" id="title" />
+    <input type="text" id="body" />
+    <p id="post"></p>
+    <button onclick="post()">Post</button>
+  </body>
+  <script>
+    // This shit the promises it is fucking unreadable and needs a lot of chaning
+    // function get() {
+    //   fetch("https://jsonplaceholder.typicode.com/posts")
+    //     .then((response) => response.json())
+    //     .then(
+    //       (data) =>
+    //         (document.getElementById("fetch").innerHTML = JSON.stringify(data))
+    //     );
+    // }
+
+    // Also this one lmaoo imagine so bad
+    // function post() {
+    //   fetch("https://jsonplaceholder.typicode.com/posts", {
+    //     method: "POST",
+    //     header: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({ title: "foo", body: "bar", userId: 1 }),
+    //   })
+    //     .then((response) => console.log(response.json()))
+    //     .then((data) => console.log(data));
+    //   // .then((console) => console.log(response))
+    // }
+
+    // Thisshi much better
+    async function get() {
+      try {
+        let data = await fetch("https://jsonplaceholder.typicode.com/posts");
+        let response = await data.json();
+        console.log(response);
+        document.getElementById("fetch").innerHTML = JSON.stringify(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    async function post() {
+      try {
+        const titleInput = document.getElementById("title").value;
+        const bodyInput = document.getElementById("body").value;
+        let data = await fetch("https://jsonplaceholder.typicode.com/posts", {
+          method: "POST",
+          header: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: titleInput,
+            body: bodyInput,
+            userId: 1,
+          }),
+        });
+        let response = data.json();
+        console.log(response);
+      } catch (error) {}
+    }
+  </script>
+</html>

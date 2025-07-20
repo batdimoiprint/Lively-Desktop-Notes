@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Lively Desktop Notes</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -11,8 +11,9 @@
       <div class="topbar">
         <h1>Lively Desktop Notes</h1>
         <input type="text" id="titleInput" placeholder="Title" />
-        <input type="text" id="paragraphInput" placeholder="Paragraph" />
-        <button class="btn" id="addBtn">Add Notes</button>
+        <input type="text" id="bodyInput" placeholder="Body" />
+        <button class="btn" onclick="postNotes()">Add Notes</button>
+        <button class="btn" onclick="fetchNotes()">Refresh</button>
       </div>
       <div class="todo">
         <h2>To-do List for this project</h2>
