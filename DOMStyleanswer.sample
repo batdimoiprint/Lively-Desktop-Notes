@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Cards with Syntax Highlighting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 15px 15px 0 0;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .card-body {
+            line-height: 1.6;
+            color: #34495e;
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Syntax highlighting classes */
+        .keyword-declaration {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .keyword-control {
+            color: #9b59b6;
+            font-weight: bold;
+        }
+
+        .keyword-error {
+            color: #e67e22;
+            font-weight: bold;
+        }
+
+        .keyword-function {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .keyword-primitive {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .keyword-modifier {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .keyword-loop {
+            color: #8e44ad;
+            font-weight: bold;
+        }
+
+        .keyword-async {
+            color: #e91e63;
+            font-weight: bold;
+        }
+
+        .add-card-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .add-card-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Programming Code Cards</h1>
+        <div class="cards-grid" id="cardsContainer"></div>
+    </div>
+
+    <button class="add-card-btn" onclick="openModal()">+</button>
+
+    <div id="cardModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Add New Card</h2>
+            <form onsubmit="addCard(event)">
+                <div class="form-group">
+                    <label for="cardTitle">Title:</label>
+                    <input type="text" id="cardTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="cardBody">Code/Content:</label>
+                    <textarea id="cardBody" placeholder="Enter your code or content here..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Add Card</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sample data with programming code snippets
+        let cardsData = [
+            {
+                title: "JavaScript Function Example",
+                body: `function fetchData() {
+    const apiUrl = 'https://api.example.com';
+    try {
+        const response = await fetch(apiUrl);
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('API request failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}`
+            },
+            {
+                title: "React Component with Hooks",
+                body: `const UserProfile = () => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        async function loadUser() {
+            try {
+                const userData = await fetchUser();
+                setUser(userData);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadUser();
+    }, []);
+    
+    if (loading) return <div>Loading...</div>;
+    return user ? <div>{user.name}</div> : null;
+}`
+            },
+            {
+                title: "Python Class Definition",
+                body: `class DataProcessor:
+    def __init__(self, data):
+        self.data = data
+        self.processed = False
+    
+    def process(self):
+        try:
+            for item in self.data:
+                if item is not None:
+                    yield item * 2
+                else:
+                    continue
+            self.processed = True
+        except Exception as e:
+            print(f"Error: {e}")
+            return None
+        finally:
+            print("Processing completed")`
+            },
+            {
+                title: "Async/Await Pattern",
+                body: `async function processQueue() {
+    const queue = await getQueue();
+    let processed = 0;
+    
+    for (const item of queue) {
+        try {
+            await processItem(item);
+            processed++;
+        } catch (error) {
+            console.warn('Failed to process item:', error);
+            continue;
+        }
+    }
+    
+    return processed;
+}`
+            }
+        ];
+
+        // Define keyword categories and their corresponding CSS classes
+        const keywordPatterns = {
+            // Declaration keywords
+            'keyword-declaration': ['const', 'let', 'var', 'def', 'class', 'function', 'interface', 'type'],
+            // Control flow keywords
+            'keyword-control': ['if', 'else', 'elif', 'switch', 'case', 'default'],
+            // Error handling
+            'keyword-error': ['try', 'catch', 'except', 'finally', 'throw', 'raise'],
+            // Function related
+            'keyword-function': ['return', 'yield', 'import', 'export', 'from'],
+            // Primitive types
+            'keyword-primitive': ['null', 'undefined', 'None', 'true', 'false', 'True', 'False'],
+            // Access modifiers
+            'keyword-modifier': ['public', 'private', 'protected', 'static', 'abstract'],
+            // Loop keywords
+            'keyword-loop': ['for', 'while', 'do', 'break', 'continue', 'in', 'of'],
+            // Async keywords
+            'keyword-async': ['async', 'await', 'Promise']
+        };
+
+        function highlightSyntax(text) {
+            let highlightedText = text;
+            
+            // Process each keyword category
+            Object.entries(keywordPatterns).forEach(([className, keywords]) => {
+                keywords.forEach(keyword => {
+                    // Create regex pattern to match whole words only
+                    const pattern = new RegExp(`\\b${keyword}\\b`, 'g');
+                    highlightedText = highlightedText.replace(pattern, `<span class="${className}">${keyword}</span>`);
+                });
+            });
+            
+            return highlightedText;
+        }
+
+        function renderCards() {
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = '';
+            
+            cardsData.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.innerHTML = `
+                    <div class="card-title">${card.title}</div>
+                    <div class="card-body">${highlightSyntax(card.body)}</div>
+                `;
+                container.appendChild(cardElement);
+            });
+        }
+
+        function openModal() {
+            document.getElementById('cardModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('cardModal').style.display = 'none';
+            document.getElementById('cardTitle').value = '';
+            document.getElementById('cardBody').value = '';
+        }
+
+        function addCard(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('cardTitle').value;
+            const body = document.getElementById('cardBody').value;
+            
+            cardsData.push({ title, body });
+            renderCards();
+            closeModal();
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('cardModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initial render
+        renderCards();
+    </script>
+</body>
+</html>

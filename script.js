@@ -11,9 +11,6 @@ async function fetchNotes() {
   }
 }
 
-
-
-
 async function deleteNotes(idInput) {
   try {
     let data = await fetch("http://127.0.0.1:3000/api/notes", {
@@ -32,6 +29,7 @@ async function deleteNotes(idInput) {
 
 async function postNotes() {
   try {
+    event.preventDefault()
     const title = document.getElementById("titleInput").value;
     const body = document.getElementById("bodyInput").value;
 
@@ -44,6 +42,7 @@ async function postNotes() {
       })
     });
     let response = data.json()
+    window.location.reload()
     console.log(response);
     
   } catch (error) {
@@ -52,13 +51,13 @@ async function postNotes() {
 }
 
 function displayNotes(titleInput, bodyInput, idInput) {
-  const cards = document.createElement("div");
+  const cards = document.createElement("section");
   cards.className = "cards";
   const title = document.createElement("h1");
   title.textContent = titleInput;
 // ID Debug
-  const id = document.createElement("h1");
-  id.textContent = idInput;
+  // const id = document.createElement("h1");
+  // id.textContent = idInput;
 
   const paragraph = document.createElement("p");
   paragraph.textContent = bodyInput;
@@ -70,11 +69,15 @@ function displayNotes(titleInput, bodyInput, idInput) {
   });
   button.textContent = "x";
 
-  cards.appendChild(id)
+  // cards.appendChild(id)
   cards.appendChild(button);
   cards.appendChild(title);
   cards.appendChild(paragraph);
   document.getElementById("cards").appendChild(cards);
+}
+
+function validateInput(){
+
 }
 
 fetchNotes();

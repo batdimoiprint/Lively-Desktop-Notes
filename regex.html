@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Regex Practice</title>
+  </head>
+  <body style="background-color: gray">
+    <h1>Emails</h1>
+    <p id="output"></p>
+  </body>
+  <script>
+    // bunch of emails
+    // const emails = "johnkennypogitalaga@gmail.com,reyesjohnkenny21@gmail.com,reyes.john.kenny.quiachon@gmail.com"
+
+    // const emaiilRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}/g
+    // console.log(emaiilRegex);
+
+    // const extractedEmails = emails.match(emaiilRegex)
+    // console.log(extractedEmails);
+
+    // const phoneNumber = "09123456789,09123456732";
+    // const numberRegex = /09[0-9]{9}/g;
+
+    // document.getElementById("output").innerHTML =
+    //   phoneNumber.match(numberRegex);
+    // console.log();
+
+    // Returns index of the first matched based on the current strin
+    // const sped = "Ako si Revie"
+    // const sino = sped.search(/Revie/g) 
+
+    // // Returns replaces exact string 
+    // const gustoNiOne = "Ang gusto ni onesimus ay si Diana" 
+    // const pipiliin = gustoNiOne.replace(/Diana/g, "Willowby")
+
+    
+
+    // // Returns array of results 'Result', index per letter, inputs, 
+    // const closure = "Karl, Karlyyyy, Ghynell, Jazelle, Serato, Grade 7, Karl"
+    // const ghynel = closure.match(/Karl/)
+
+    // const message = "Hey @john, please check with @kenny and @revie about the update."
+    // let username = message.match(/@[a-zA-Z0-9]+/g)
+
+    // const tweet = "Loving the #sunshine and #beachlife today!"
+    // let hashtag = tweet.match(/#[a-zA-Z0-9]+/g)
+
+    // const date = "2025-07-21"
+    // let validate = date.match(/^\d{4}-\d{2}-\d{2}$/)
+
+    // const sentence = "I have 2 cats and 15 fish."
+    // let findNumber = sentence.match(/\d+/g)
+
+    // const words = "Dickhead"
+    // let vowels = words.replace(/[aeiou]/g, "*")
+
+    // const filename = "photohead.jpg, documents.pdf, script.js"
+    // let fileExt = filename.match(/\.[a-zA-Z0-9]+/g)
+
+    const sentence = "Hello World, this Is Regex McDonals"
+    let uppercaseLetters = sentence.match(/[A-Z][a-z]*/g)
+    console.log(uppercaseLetters);
+
+    const username = "batdimoiprintkamaoko21"
+    let validate = username.match(/[a-zA-Z][a-zA-Z0-9_]{3,11}/g)
+    console.log(validate);
+
+    const html = "<div><p>Hello</p></div>"
+    let tags = html.match(/<\/?[a-z]+>/g)
+    console.log(tags);
+
+    const spaced = "Ako  si revie  ha ha  ha ha"
+    const space = spaced.replace(/\s{2,}/g, " ")
+    console.log(space);
+
+    const url = "https://kennyreyes.me, http://exampledomain.org"
+    let extract = url.replace(/[a-z]+:\/\/+/g, "")
+    console.log(extract);
+  </script>
+</html>

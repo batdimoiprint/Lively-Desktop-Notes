@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    body {
+      background-color: gray;
+    }
+    .highlight{
+        color: red;
+    }
+
+  </style>
+  <body>
+    <header id="header">
+      <h1 id="content">Title</h1>
+      <section id="bodyContent"></section>
+    </header>
+  </body>
+  <script>
+    let bodyContent;
+
+    async function fetchNotes() {
+      try {
+        let data = await fetch("http://127.0.0.1:3000/api/notes");
+        let json = await data.json();
+        // console.log(json);
+        json.forEach((item) => {
+          displayNotes(item.title, item.body, item.id);
+          bodyContent = item.body;
+        //   console.log(typeof bodyContent + bodyContent);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    function displayNotes(titleInput, bodyInput, idInput) {
+      const cards = document.createElement("section");
+      cards.className = "cards";
+      const title = document.createElement("h1");
+      title.textContent = titleInput;
+      // ID Debug
+      // const id = document.createElement("h1");
+      // id.textContent = idInput;
+
+      const paragraph = document.createElement("p");
+      let testLiteral = "Tanginamohhhh"
+      //   paragraph.id = "bodyContent";
+      let character = bodyInput.replace(
+        /Testing/g,
+        `<span class="highlight">Testing</span>`
+      );
+      paragraph.innerHTML = character;
+      console.log(character);
+      console.log(paragraph);
+      const content = bodyInput;
+      //   switch (bodyInput) {
+      //     case "Testing":
+
+      //       paragraph.style.color = "red";
+      //       break;
+
+      //     default:
+      //     character
+      //       paragraph.style.color = "blue"
+      //       break;
+      //   }
+
+      const button = document.createElement("btn");
+      button.className = "btn-close";
+      button.addEventListener("click", () => {
+        deleteNotes(idInput);
+        // console.log(idInput);
+      });
+      button.textContent = "x";
+
+      // cards.appendChild(id)
+      cards.appendChild(button);
+      cards.appendChild(title);
+      cards.appendChild(paragraph);
+      document.getElementById("bodyContent").appendChild(cards);
+    }
+    fetchNotes();
+  </script>
+</html>

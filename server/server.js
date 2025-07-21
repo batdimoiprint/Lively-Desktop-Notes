@@ -30,7 +30,7 @@ const server = http.createServer((req, res) => {
       if (err) {
         log(`Error fetching data: ${err}`);
         res.writeHead(500, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ error: "Failed to read notes" }));
+        res.end(JSON.stringify({ err: "Failed to read notes" }));
         return;
       }
       //   res.writeHead(200, { "Content-Type": "application/json" });
@@ -133,5 +133,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(port, () => {
-  log(`Server running on port ${port}`);
+  // log(`Server running on port ${port}`);
 });

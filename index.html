@@ -7,22 +7,37 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="header">
-      <div class="topbar">
+    <header class="header">
+      <section class="topbar">
         <h1>Lively Desktop Notes</h1>
-        <input type="text" id="titleInput" placeholder="Title" />
-        <input type="text" id="bodyInput" placeholder="Body" />
-        <button class="btn" onclick="postNotes()">Add Notes</button>
-        <button class="btn" onclick="fetchNotes()">Refresh</button>
-      </div>
-      <div class="todo">
+        <form onsubmit="postNotes()">
+          <input
+            autocomplete="off"
+            type="text"
+            required
+            id="titleInput"
+            placeholder="Title"
+          />
+          <input
+            autocomplete="off"
+            type="text"
+            required
+            id="bodyInput"
+            placeholder="Body"
+          />
+          <button type="submit" class="btn">Add Notes</button>
+          <button type="reset" aria-label="reset" class="btn">Reset</button>
+        </form>
+      </section>
+      <section class="todo">
         <h2>To-do List for this project</h2>
-        <li>Frontend - 50%</li>
-        <li>Backend - 50% but needs a lot of polisihing lmaooo</li>
-      </div>
-    </div>
-
-    <div class="container" id="cards"></div>
+        <ul >
+          <li>Frontend - Input Validation</li>
+          <li>Backend - Finished (just remove logs there)</li>
+        </ul>
+      </section>
+    </header>
+    <main class="container" id="cards"></main>
   </body>
   <script src="script.js"></script>
 </html>
