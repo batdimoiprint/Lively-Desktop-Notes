@@ -8,6 +8,7 @@
 - Use hardcoded data for state in frontend; use file-based persistence for backend.
 - Extend features by adding new JS functions, updating HTML/CSS, or expanding backend API as needed.
 - Ignore all comments as it is just previous codes, focus only on non commented
+- When requested a practice only have 5 questions maximum only
 
 ---
 
