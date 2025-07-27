@@ -9,9 +9,13 @@
   <body>
     <main class="screen">
       <section class="header">
-        <h1>Lively Desktop Notes</h1>
-        <label for="color">Matrix Color</label>
-        <input type="color" name="color" onchange="setColor()"  id="color">
+        <form onsubmit="setColor()">
+          <h1>Lively Desktop Notes</h1>
+          <label for="color">Matrix Color</label>
+          <input type="text" name="color" max="8" id="color" />
+          <button type="submit" class="btn">Change Color</button>
+        </form>
+
         <form id="inputs" onsubmit="postNotes()">
           <textarea
             cols="30"
