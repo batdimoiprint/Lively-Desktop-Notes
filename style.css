@@ -1,57 +1,69 @@
 * {
-  margin: 0;
-  border: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif, Geneva, Tahoma,
-    sans-serif;
-  font-weight: 100;
-  max-width: 3840px;
-  max-height: 1080px;
-  overflow: hidden;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background-color: #002b36;
+  background-color: black;
   color: #c5c5c5;
-  margin: 1rem;
+  overflow: hidden;
+  margin: 0;
+  border: 0;
+}
+
+form {
+  padding-block: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+textarea {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+
+  color: #c5c5c5;
+  height: 1rem;
+  width: fit-content;
+  resize: none;
+  background: rgba(100, 100, 100, 0.28);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.39);
+}
+
+canvas {
+  display: block;
+}
+
+h1 {
+  font-weight: 700;
 }
 
 .header {
-  display: flex;
-  gap: 1rem;
-}
-
-.topbar, .todo {
-  background-color: #004052;
-  padding: 1rem;
-  border-radius: 1rem;
+  position: absolute;
   width: fit-content;
-}
+  display: block;
+  margin: 1rem;
+  padding: 0.8rem;
 
-.container {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.cards {
-  background-color: #004052;
-  padding: 2rem;
-  margin-top: 1rem;
-  min-height: 5rem;
-  max-height: 1080px;
-  width: fit-content;
-  border: white;
-  border-radius: 1rem;
-}
-
-.title {
-  font-weight: bold;
+  background: rgba(100, 100, 100, 0.28);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.39);
 }
 
 .btn {
   padding: 0.5rem 1rem;
   border-radius: 1rem;
-  background-color: #35807e;
+  background: rgba(16, 181, 247, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.39);
   color: #c5c5c5;
   border: none;
   cursor: pointer;
@@ -60,7 +72,12 @@ body {
 .btn-close {
   padding: 0.3rem 0.5rem;
   border-radius: 1rem;
-  background-color: #d9544fd2;
+  background: rgba(204, 54, 54, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.39);
   color: #c5c5c5;
   border: none;
   cursor: pointer;
@@ -68,11 +85,92 @@ body {
   font-size: 0.9rem;
 }
 
-input {
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  border: none;
-  background-color: #003847;
-  color: #c5c5c5;
+.card-container {
+  margin: 1rem;
+  position: absolute;
+  margin-top: 14rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.matrix {
+  display: block;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.cards {
+  /* From https://css.glass */
+  background: rgba(100, 100, 100, 0.28);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.39);
+  /* background-color: #004052; */
+  white-space: pre-wrap;
+  padding: 1rem;
+  min-height: 5rem;
+  max-width: 20rem;
+  max-height: 20rem;
+  overflow: auto;
   width: fit-content;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Keywords */
+.keyword-declaration {
+  color: #dc322f;
+  font-weight: bold;
+}
+
+.keyword-control {
+  color: #859900;
+  font-weight: bold;
+}
+
+.keyword-error {
+  color: #cb4b16;
+  font-weight: bold;
+}
+
+.keyword-function {
+  color: #268bd2;
+  font-weight: bold;
+}
+
+.keyword-primitive {
+  color: #2aa198;
+  font-weight: bold;
+}
+
+.keyword-modifier {
+  color: #b58900;
+  font-weight: bold;
+}
+
+.keyword-loop {
+  color: #6c71c4;
+  font-weight: bold;
+}
+
+.keyword-async {
+  color: #d33682;
+  font-weight: bold;
+}
+
+.keyword-operator {
+  color: #859900;
+  font-weight: bold;
+}
+
+.keyword-preprocessor {
+  color: #cb4b16;
+  font-weight: bold;
 }

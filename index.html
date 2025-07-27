@@ -7,37 +7,44 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header class="header">
-      <section class="topbar">
+    <main class="screen">
+      <section class="header">
         <h1>Lively Desktop Notes</h1>
-        <form onsubmit="postNotes()">
-          <input
+        <label for="color">Matrix Color</label>
+        <input type="color" name="color" onchange="setColor()"  id="color">
+        <form id="inputs" onsubmit="postNotes()">
+          <textarea
+            cols="30"
+            form="inputs"
+            wrap="hard"
+            draggable="false"
             autocomplete="off"
-            type="text"
             required
-            id="titleInput"
             placeholder="Title"
-          />
-          <input
+            name=""
+            id="titleInput"
+          ></textarea>
+          <textarea
+            cols="30"
+            form="inputs"
+            wrap="hard"
+            draggable="false"
             autocomplete="off"
-            type="text"
             required
-            id="bodyInput"
             placeholder="Body"
-          />
+            name=""
+            id="bodyInput"
+          ></textarea>
+
           <button type="submit" class="btn">Add Notes</button>
           <button type="reset" aria-label="reset" class="btn">Reset</button>
         </form>
       </section>
-      <section class="todo">
-        <h2>To-do List for this project</h2>
-        <ul >
-          <li>Frontend - Input Validation</li>
-          <li>Backend - Finished (just remove logs there)</li>
-        </ul>
+      <section class="card-container" id="notes"></section>
+      <section class="matrix">
+        <canvas id="c"></canvas>
       </section>
-    </header>
-    <main class="container" id="cards"></main>
+    </main>
   </body>
   <script src="script.js"></script>
 </html>
