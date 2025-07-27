@@ -188,6 +188,7 @@ async function deleteNotes(idInput) {
       }),
     });
     let response = await data.json();
+    window.location.reload();
     console.log(response);
   } catch (error) {
     console.error(error);
@@ -263,17 +264,37 @@ function displayNotes(titleInput, bodyInput, idInput) {
   document.getElementById("notes").appendChild(cards);
 }
 
-function setColor() {
-  const hex = document.getElementById("color").value;
-  const hexadecimal = "0123456789ABCDEF";
-  r = hex.substring(1, 3);
-  g = hex.substring(3, 5);
-  b = hex.substring(5, 7);
+let color = "";
 
-  const hexArray = [...hexadecimal];
-  console.log(hexArray[15]);
+async function getColor() {
+  try {
+    let data = await fetch("http://localhost:3000/api/color");
+    let json = await data.json();
+    color = `#${json}`;
+    document.getElementById("color").value = color;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-  r = 15 + (16 ^ 1) + 15 + (16 ^ 0);
+getColor();
+
+async function setColor() {
+  let color = document.getElementById("color").value;
+  try {
+    let data = await fetch("http://localhost:3000/api/color", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        hex: color
+      }),
+    });
+    let response = await data.json;
+    window.location.reload();
+    console.log(response)
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 var root = {
@@ -324,7 +345,7 @@ function draw() {
   // looping over drops
   for (var i = 0; i < drops.length; i++) {
     // background color
-    ctx.fillStyle = "rgba(10,10,10, 1)";
+    ctx.fillStyle = "black";
     ctx.fillRect(i * font_size, drops[i] * font_size, font_size, font_size);
     // a random chinese character to print
     var text = characters[Math.floor(Math.random() * characters.length)];
@@ -337,14 +358,7 @@ function draw() {
       var rb = Math.floor(127 * Math.sin(root.rainbowSpeed * hue + 4) + 128);
       ctx.fillStyle = "rgba(" + rr + "," + rg + "," + rb + ")";
     } else {
-      ctx.fillStyle =
-        "rgba(" +
-        root.wavecolor.r +
-        "," +
-        root.wavecolor.g +
-        "," +
-        root.wavecolor.b +
-        ")";
+      ctx.fillStyle = `${color}`;
     }
 
     ctx.fillText(text, i * font_size, drops[i] * font_size);

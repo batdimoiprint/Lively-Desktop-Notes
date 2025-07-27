@@ -41,7 +41,28 @@ This project helped me realize that I can accomplish what AI can — it just tak
 - How promise chaining works — and why to avoid it  
 - CORS headers: learned the hard way how important they are
 
+
+
 ---
 
 It was a satisfying project — but there's still **a lot more to learn**.
-"""
+
+---
+
+## Attribution & Credits
+
+### Matrix Animation
+- **Original Matrix Effect**: [parambirs/matrix](https://github.com/parambirs/matrix)
+- **Inspired by**: [Sample code](http://thecodeplayer.com/walkthrough/matrix-rain-animation-html5-canvas-javascript) on [thecodeplayer.com](http://thecodeplayer.com/)
+- **Lively Wallpaper Integration**: khuong (2020-09-05) - Added customizable options (rainbow/color select)
+
+### Project Development
+- **Enhanced by**: kenny2125 - Notes management system, Node.js backend, syntax highlighting
+
+---
+
+## License
+
+This project builds upon open-source work. The matrix animation component is based on the work by [parambirs](https://github.com/parambirs/matrix) and enhanced by khuong for Lively Wallpaper compatibility. Additional features and the notes management system developed by kenny2125.
+
+Original matrix code inspiration from thecodeplayer.com educational content."""

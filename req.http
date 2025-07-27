@@ -6,8 +6,8 @@ POST http://localhost:3000/api/notes
 Content-Type: application/json
 
 {
-  "title": "OKs naman ah bat may error don lmao",
-  "body": "Tanginang body yan"
+  "title": "Ako si onesimus",
+  "body": "Ayieieiei"
 }
 
 ### Delete a note
@@ -16,4 +16,18 @@ Content-Type: application/json
 
 {
   "id": "1753026533272"
+}
+
+
+### Get Color
+GET http://localhost:3000/api/color
+Content-Type: application/json
+
+
+### New Color
+POST http://localhost:3000/api/color
+Content-Type: application/json
+
+{
+  "hex": "#002b36"
 }

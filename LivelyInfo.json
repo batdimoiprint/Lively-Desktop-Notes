@@ -1,0 +1,12 @@
+{
+  "AppVersion": "1.0.0",
+  "Title": "Lively Desktop Notes",
+  "Thumbnail": "thumbnail.jpg",
+  "Preview": "preview2.gif",
+  "Desc": "Note app for codes snippets combined with Matrix background",
+  "Author": "kenny2125 (notes app) / parambirs (matrix base) / khuong (lively integration)",
+  "License": "MIT",
+  "Contact": "Based on: https://github.com/parambirs/matrix | Lively integration: khuong#8225 | Notes app: kenny2125",
+  "Type": 1,
+  "FileName": "index.html"
+}

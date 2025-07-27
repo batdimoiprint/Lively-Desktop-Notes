@@ -115,14 +115,14 @@ h1 {
   padding: 1rem;
   min-height: 5rem;
   max-width: 20rem;
-  max-height: 20rem;
+  max-height: 47.5rem;
   overflow: auto;
   width: fit-content;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 8px;
-}
+} */
 
 /* Keywords */
 .keyword-declaration {

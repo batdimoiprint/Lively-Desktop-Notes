@@ -4,7 +4,6 @@ const fs = require("fs");
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-
   // Handling Routings for Get and Post
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
@@ -122,13 +121,64 @@ const server = http.createServer((req, res) => {
           }
         );
 
-        log("Delete check")
+        log("Delete check");
 
         const message = { message: "Delete check" };
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify(message));
       });
     });
+  }
+
+  // Get stored color
+  if (req.method === "GET" && req.url === "/api/color") {
+    let hex = "";
+    fs.readFile("./LivelyProperties.json", "utf-8", (err, data) => {
+      if (err) {
+        log(err);
+        res.writeHead(500, { "Content-Type": "text/plain" });
+        res.end(JSON.stringify(err));
+        return;
+      }
+
+      let jsonObject = JSON.parse(data);
+      hex = jsonObject.matrixColor.value;
+      let hexCode = hex.substring(1, 7);
+      log(`The color is ${hexCode}`);
+      res.writeHead(200, { "Content-Type": "text/plain" });
+      res.end(JSON.stringify(hexCode));
+    });
+  }
+
+  if (req.method === "POST" && req.url === "/api/color") {
+    let body = "";
+    req.on("data", (chunk) => {
+      body += chunk;
+      log(body);
+    });
+
+    fs.readFile("./LivelyProperties.json", "utf-8", (err, data) => {
+      if (err) {
+        log(err);
+        res.writeHead(500, { "Content-Type": "text/plain" });
+        res.end(JSON.stringify(err));
+        return;
+      }
+      let json = JSON.parse(data);
+      let hex = JSON.parse(body);
+      json.matrixColor.value = hex.hex;
+
+      log(json);
+
+      fs.writeFile("./LivelyProperties.json", JSON.stringify(json), (err) => {
+        if (err) {
+          log(err);
+        }
+      });
+    });
+
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Updated color");
   }
 });
 
