@@ -1,4 +1,4 @@
-# Learning Fundamentals with AI Assistance
+# Lively Desktop Notes
 
 I instructed GitHub Copilot to **teach me** how to code instead of letting it write code for me.  
 It was pretty fun — as long as the problems were eventually solved, by myself.
