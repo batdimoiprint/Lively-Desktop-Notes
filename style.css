@@ -3,30 +3,30 @@
 }
 
 body {
+  margin: 0;
+  border: 0;
   background-color: black;
   color: #c5c5c5;
   overflow: hidden;
-  margin: 0;
-  border: 0;
 }
 
 form {
-  padding-block: 0.3rem;
   display: flex;
   align-items: center;
   gap: 1rem;
+  padding-block: 0.3rem;
 }
-textarea, input {
+textarea,
+input {
   padding: 0.5rem;
-  border-radius: 0.5rem;
-  border: none;
-
-  color: #c5c5c5;
-  height: 1rem;
   width: fit-content;
+  height: 1rem;
   resize: none;
+  overflow: hidden;
+  color: #c5c5c5;
+
   background: rgba(100, 100, 100, 0.28);
-  border-radius: 16px;
+  border-radius: 1rem;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
@@ -40,6 +40,11 @@ canvas {
 h1 {
   font-weight: 700;
   cursor: pointer;
+  margin: 0;
+}
+
+p {
+  margin-bottom: 1rem;
 }
 
 .header {
@@ -48,6 +53,7 @@ h1 {
   display: block;
   margin: 1rem;
   padding: 0.8rem;
+  z-index: 3;
 
   background: rgba(100, 100, 100, 0.28);
   border-radius: 16px;
@@ -60,55 +66,76 @@ h1 {
 .btn {
   padding: 0.5rem 1.9rem;
   border-radius: 1rem;
+
   background: rgba(16, 181, 247, 0.2);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  border: 1px solid rgba(255, 255, 255, 0.39);
+  border: 1px solid rgba(16, 181, 247, 0.2);
+
   color: #c5c5c5;
-  border: none;
   cursor: pointer;
 }
 
 .btn-close {
   padding: 0.3rem 0.5rem;
   border-radius: 1rem;
+
+  font-weight: 500;
+  font-size: 0.9rem;
+
   background: rgba(204, 54, 54, 0.2);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  border: 1px solid rgba(255, 255, 255, 0.39);
+  border: 1px solid rgba(204, 54, 54, 0.2);
+
   color: #c5c5c5;
-  border: none;
   cursor: pointer;
-  font-weight: 500;
-  font-size: 0.9rem;
 }
 
 .card-container {
-  margin: 1rem;
   position: absolute;
-  margin-top: 12rem;
   display: flex;
-  gap: 1rem;
   flex-wrap: wrap;
+  z-index: 2;
+
+  margin: 1rem;
+  margin-top: 10rem;
+  gap: 1rem;
+}
+
+.modal-container {
+  position: relative;
+  display: flex;
+  height: 1080px;
+  justify-content: center;
+  align-items: center;
+
+
+  /* background-color: #2aa198; */
 }
 
 .matrix {
+  position: absolute;
   display: block;
+  z-index: 0;
 }
 
 .title {
   font-weight: bold;
 }
 
-::-webkit-scrollbar{
-  width: 1px;
-}
-
 .cards {
+  min-height: 5rem;
+  max-width: 20rem;
+  max-height: 20rem;
+  width: fit-content;
+
+  padding: 1rem;
   /* From https://css.glass */
   background: rgba(100, 100, 100, 0.28);
   border-radius: 16px;
@@ -118,17 +145,29 @@ h1 {
   border: 1px solid rgba(255, 255, 255, 0.39);
   /* background-color: #004052; */
   white-space: pre-wrap;
-  padding: 1rem;
-  min-height: 5rem;
-  max-width: 20rem;
-  max-height: 20rem;
-  overflow: auto;
-  width: fit-content;
+  overflow: hidden;
 }
 
-/* ::-webkit-scrollbar {
+.modal {
+  background: rgba(25, 25, 25, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.39);
+
+  white-space: pre-wrap;
+  padding: 1rem;
+
+  width: fit-content;
+
+  max-height: 40rem;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
   width: 8px;
-} */
+}
 
 /* Keywords */
 .keyword-declaration {

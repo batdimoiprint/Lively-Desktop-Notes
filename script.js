@@ -167,7 +167,7 @@ const keywordPatterns = {
 };
 async function fetchNotes() {
   try {
-    let data = await fetch("http://127.0.0.1:3000/api/notes");
+    let data = await fetch("http://localhost:3000/api/notes");
     let json = await data.json();
     // console.log(json);
     json.forEach((item) => {
@@ -180,7 +180,7 @@ async function fetchNotes() {
 
 async function deleteNotes(idInput) {
   try {
-    let data = await fetch("http://127.0.0.1:3000/api/notes", {
+    let data = await fetch("http://localhost:3000/api/notes", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -201,7 +201,7 @@ async function postNotes() {
     const title = document.getElementById("titleInput").value;
     const body = document.getElementById("bodyInput").value;
 
-    let data = await fetch("http://127.0.0.1:3000/api/notes", {
+    let data = await fetch("http://localhost:3000/api/notes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -240,19 +240,21 @@ function displayNotes(titleInput, bodyInput, idInput) {
   cards.className = "cards";
   const title = document.createElement("h1");
   title.textContent = titleInput;
+  title.addEventListener("click", () => {
+    displaymodal(titleInput,bodyInput, idInput);
+  });
+
   // ID Debug
   // const id = document.createElement("h1");
   // id.textContent = idInput;
 
   const paragraph = document.createElement("p");
-
   paragraph.innerHTML = highlightSyntax(bodyInput);
 
   const button = document.createElement("btn");
   button.className = "btn-close";
   button.addEventListener("click", () => {
     deleteNotes(idInput);
-    console.log(idInput);
   });
   button.textContent = "Delete Note";
 
@@ -262,6 +264,32 @@ function displayNotes(titleInput, bodyInput, idInput) {
   cards.appendChild(paragraph);
   cards.appendChild(button);
   document.getElementById("notes").appendChild(cards);
+}
+
+function displaymodal(modalTitle, modalBody, idInput) {
+  // alert(modalTitle)
+  const modal = document.createElement("section");
+  modal.className = "modal";
+  modal.style = "z-index:5"
+  const title = document.createElement("h1");
+  title.textContent = modalTitle;
+
+  const body = document.createElement("p")
+  body.innerHTML = highlightSyntax(modalBody)
+
+  const close = document.createElement("button");
+  close.className = "btn-close";
+  close.textContent = "Close Modal";
+  close.addEventListener("click", () => {
+    modal.remove();
+    // deleteNotes(idInput)
+  });
+
+  
+  modal.appendChild(close);
+  modal.appendChild(title);
+  modal.appendChild(body)
+  document.getElementById("cardModal").appendChild(modal);
 }
 
 let color = "";
@@ -286,12 +314,12 @@ async function setColor() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        hex: color
+        hex: color,
       }),
     });
     let response = await data.json;
     window.location.reload();
-    console.log(response)
+    console.log(response);
   } catch (error) {
     console.log(error);
   }
