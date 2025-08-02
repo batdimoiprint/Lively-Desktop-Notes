@@ -1,1 +1,1 @@
-[{"id":1753691731673,"title":"CSS Conventions","body":" /* Position Layout */\n      /* Box Model */\n      /* Typography */\n      /* Visual */\n      /* Animations */"}]
+[{"id":1753691731673,"title":"CSS Conventions","body":" /* Position Layout */\n      /* Box Model */\n      /* Typography */\n      /* Visual */\n      /* Animations */"},{"id":1754151005667,"title":"Analogies are a good thing","body":"Explains any concept a lot better"},{"id":1754151049752,"title":"Why do i feel so down lmao","body":"Last sunday na masaya ako hays"}]

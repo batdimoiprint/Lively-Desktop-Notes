@@ -238,7 +238,7 @@ function highlightSyntax(text) {
 function displayOverlay(isOpen) {
   const overlayContainer = document.getElementById("overlay");
   let overlay = overlayContainer.querySelector(".overlay");
-  
+
   if (isOpen === true) {
     if (!overlay) {
       overlay = document.createElement("div");
@@ -268,21 +268,21 @@ function displayNotes(titleInput, bodyInput, idInput) {
   // ID Debug
   // const id = document.createElement("h1");
   // id.textContent = idInput;
+  const paragraphContainer = document.createElement("div");
+  paragraphContainer.className = "paragraph-container";
 
   const paragraph = document.createElement("p");
   paragraph.innerHTML = highlightSyntax(bodyInput);
 
-  // const button = document.createElement("btn");
-  // button.className = "btn-close";
-  // button.addEventListener("click", () => {
-  //   deleteNotes(idInput);
-  // });
-  // button.textContent = "Delete Note";
+  const checkBox = document.createElement("input");
+  checkBox.type = "checkbox"; 
+  checkBox.setAttribute("checked", "true")
 
-  // cards.appendChild(id)
+  // paragraphContainer.appendChild(checkBox);
+  paragraphContainer.appendChild(paragraph);
 
   cards.appendChild(title);
-  cards.appendChild(paragraph);
+  cards.appendChild(paragraphContainer);
   // cards.appendChild(button);
   document.getElementById("notes").appendChild(cards);
 }
@@ -322,6 +322,9 @@ function displaymodal(modalTitle, modalBody, idInput) {
   modal.appendChild(title);
   modal.appendChild(body);
   document.getElementById("cardModal").appendChild(modal);
+  
+  // Apply current color theme to the new buttons
+  updateAllButtonColors();
 }
 
 let color = "";
@@ -332,6 +335,7 @@ async function getColor() {
     let json = await data.json();
     color = `#${json}`;
     document.getElementById("color").value = color;
+    updateAllButtonColors(color); // Update all buttons with the matrix color
   } catch (error) {
     console.log(error);
   }
@@ -350,6 +354,7 @@ async function setColor() {
       }),
     });
     let response = await data.json;
+    updateAllButtonColors(color); // Update all buttons with new color
     window.location.reload();
     console.log(response);
   } catch (error) {
@@ -458,3 +463,149 @@ function hexToRgb(hex) {
 }
 
 fetchNotes();
+
+// Mode toggle functionality
+let currentMode = 'notes'; // 'notes' or 'tasks'
+
+function toggleMode() {
+  const toggleBtn = document.getElementById('toggleBtn');
+  const submitBtn = document.getElementById('submitBtn');
+  const titleInput = document.getElementById('titleInput');
+  const bodyInput = document.getElementById('bodyInput');
+  const form = document.getElementById('inputs');
+  
+  if (currentMode === 'notes') {
+    // Switch to tasks mode
+    currentMode = 'tasks';
+    toggleBtn.textContent = 'Switch to Notes';
+    submitBtn.textContent = 'Add Task';
+    titleInput.placeholder = 'Task Title';
+    bodyInput.placeholder = 'Task Description';
+    form.onsubmit = postTasks;
+  } else {
+    // Switch to notes mode
+    currentMode = 'notes';
+    toggleBtn.textContent = 'Switch to Tasks';
+    submitBtn.textContent = 'Add Notes';
+    titleInput.placeholder = 'Title';
+    bodyInput.placeholder = 'Body';
+    form.onsubmit = postNotes;
+  }
+}
+
+async function postTasks() {
+  try {
+    event.preventDefault();
+    const title = document.getElementById("titleInput").value;
+    const body = document.getElementById("bodyInput").value;
+
+    let data = await fetch("http://localhost:4000/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: title,
+        description: body,
+        completed: false
+      }),
+    });
+    let response = data.json();
+    window.location.reload();
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Color input toggle functionality
+function toggleColorInput() {
+  const container = document.getElementById('colorInputContainer');
+  const toggleBtn = document.getElementById('colorToggleBtn');
+  
+  if (container.style.display === 'none') {
+    container.style.display = 'flex';
+    container.style.gap = '0.5rem';
+    container.style.alignItems = 'center';
+    toggleBtn.textContent = 'Hide Color';
+  } else {
+    container.style.display = 'none';
+    toggleBtn.textContent = 'Matrix Color';
+  }
+}
+
+// Update color button to reflect hex value
+function updateColorButton(hexColor = null) {
+  const colorInput = document.getElementById('color');
+  const colorBtn = document.getElementById('colorToggleBtn');
+  
+  // Use parameter color or input value
+  const targetColor = hexColor || colorInput?.value;
+  
+  if (targetColor) {
+    const rgb = hexToRgb(targetColor);
+    if (rgb) {
+      // Set button background to reflect the color
+      colorBtn.style.background = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3)`;
+      colorBtn.style.borderColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.5)`;
+    }
+  }
+}
+
+// Universal button color update function
+function updateAllButtonColors(hexColor = null) {
+  const colorInput = document.getElementById('color');
+  
+  // Use parameter color or input value
+  const targetColor = hexColor || colorInput?.value;
+  
+  if (targetColor) {
+    const rgb = hexToRgb(targetColor);
+    if (rgb) {
+      // Update all .btn buttons (general buttons)
+      const generalButtons = document.querySelectorAll('.btn');
+      generalButtons.forEach(btn => {
+        if (!btn.id || btn.id !== 'colorToggleBtn') { // Skip color button, it has special handling
+          btn.style.background = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.15)`;
+          btn.style.borderColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.25)`;
+          btn.style.boxShadow = `
+            0 6px 25px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15),
+            inset 0 -1px 0 rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.1)`;
+        }
+      });
+      
+      // Update delete buttons with red tint but matrix color influence
+      const deleteButtons = document.querySelectorAll('.btn-delete');
+      deleteButtons.forEach(btn => {
+        btn.style.background = `rgba(${Math.min(255, rgb.r + 50)}, ${Math.max(0, rgb.g - 20)}, ${Math.max(0, rgb.b - 20)}, 0.15)`;
+        btn.style.borderColor = `rgba(${Math.min(255, rgb.r + 50)}, ${Math.max(0, rgb.g - 20)}, ${Math.max(0, rgb.b - 20)}, 0.25)`;
+        btn.style.boxShadow = `
+          0 6px 25px rgba(${Math.min(255, rgb.r + 50)}, ${Math.max(0, rgb.g - 20)}, ${Math.max(0, rgb.b - 20)}, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15),
+          inset 0 -1px 0 rgba(${Math.min(255, rgb.r + 50)}, ${Math.max(0, rgb.g - 20)}, ${Math.max(0, rgb.b - 20)}, 0.1)`;
+      });
+      
+      // Update close buttons with neutral tone but matrix color influence
+      const closeButtons = document.querySelectorAll('.btn-close');
+      closeButtons.forEach(btn => {
+        const avgColor = Math.floor((rgb.r + rgb.g + rgb.b) / 3);
+        btn.style.background = `rgba(${avgColor}, ${avgColor}, ${avgColor}, 0.15)`;
+        btn.style.borderColor = `rgba(${avgColor}, ${avgColor}, ${avgColor}, 0.25)`;
+        btn.style.boxShadow = `
+          0 6px 25px rgba(${avgColor}, ${avgColor}, ${avgColor}, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15),
+          inset 0 -1px 0 rgba(${avgColor}, ${avgColor}, ${avgColor}, 0.1)`;
+      });
+      
+      // Update the special color toggle button
+      updateColorButton(targetColor);
+    }
+  }
+}
+
+// Listen for color input changes
+document.addEventListener('DOMContentLoaded', function() {
+  const colorInput = document.getElementById('color');
+  if (colorInput) {
+    colorInput.addEventListener('input', updateAllButtonColors);
+  }
+});

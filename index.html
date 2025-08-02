@@ -12,14 +12,18 @@
 
       </section>
       <section class="header">
-        <form onsubmit="setColor()">
+        <div class="header-top">
           <h1>Lively Desktop Notes</h1>
-          <label for="color">Matrix Color</label>
-          <input type="text" name="color" max="8" id="color" />
-          <button type="submit" class="btn">Change Color</button>
-        </form>
+          <div class="color-controls">
+            <button type="button" class="btn" id="colorToggleBtn" onclick="toggleColorInput()">Matrix Color</button>
+            <div id="colorInputContainer" style="display: none;">
+              <input type="text" name="color" max="8" id="color" placeholder="#ffffff" />
+              <button type="button" class="btn" onclick="setColor()">Apply</button>
+            </div>
+          </div>
+        </div>
 
-        <form id="inputs" onsubmit="postNotes()">
+        <form id="inputs" onsubmit="postNotes()" class="header-bottom">
           <textarea
             cols="30"
             form="inputs"
@@ -43,8 +47,8 @@
             id="bodyInput"
           ></textarea>
 
-          <button type="submit" class="btn">Add Notes</button>
-          <button type="reset" aria-label="reset" class="btn">Reset</button>
+          <button type="submit" class="btn" id="submitBtn">Add Notes</button>
+          <button type="button" class="btn" id="toggleBtn" onclick="toggleMode()">Switch to Tasks</button>
         </form>
       </section>
       <section class="card-container" id="notes"></section>
@@ -52,6 +56,7 @@
         <canvas id="c"></canvas>
       </section>
       <section class="modal-container" id="cardModal"></section>
+      
     </main>
   </body>
   <script src="script.js"></script>
