@@ -167,7 +167,7 @@ const keywordPatterns = {
 };
 async function fetchNotes() {
   try {
-    let data = await fetch("http://localhost:3000/api/notes");
+    let data = await fetch("http://localhost:4000/api/notes");
     let json = await data.json();
     // console.log(json);
     json.forEach((item) => {
@@ -180,7 +180,7 @@ async function fetchNotes() {
 
 async function deleteNotes(idInput) {
   try {
-    let data = await fetch("http://localhost:3000/api/notes", {
+    let data = await fetch("http://localhost:4000/api/notes", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -201,7 +201,7 @@ async function postNotes() {
     const title = document.getElementById("titleInput").value;
     const body = document.getElementById("bodyInput").value;
 
-    let data = await fetch("http://localhost:3000/api/notes", {
+    let data = await fetch("http://localhost:4000/api/notes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -235,13 +235,34 @@ function highlightSyntax(text) {
   return highlightedText;
 }
 
+function displayOverlay(isOpen) {
+  const overlayContainer = document.getElementById("overlay");
+  let overlay = overlayContainer.querySelector(".overlay");
+  
+  if (isOpen === true) {
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.className = "overlay";
+      overlay.style = "z-index: 6; visibility: visible;";
+      overlayContainer.appendChild(overlay);
+    } else {
+      overlay.style.visibility = "visible";
+    }
+  } else {
+    if (overlay) {
+      overlay.style.visibility = "hidden";
+      overlay.remove();
+    }
+  }
+}
+
 function displayNotes(titleInput, bodyInput, idInput) {
   const cards = document.createElement("section");
   cards.className = "cards";
   const title = document.createElement("h1");
   title.textContent = titleInput;
   title.addEventListener("click", () => {
-    displaymodal(titleInput,bodyInput, idInput);
+    displaymodal(titleInput, bodyInput, idInput);
   });
 
   // ID Debug
@@ -251,44 +272,55 @@ function displayNotes(titleInput, bodyInput, idInput) {
   const paragraph = document.createElement("p");
   paragraph.innerHTML = highlightSyntax(bodyInput);
 
-  const button = document.createElement("btn");
-  button.className = "btn-close";
-  button.addEventListener("click", () => {
-    deleteNotes(idInput);
-  });
-  button.textContent = "Delete Note";
+  // const button = document.createElement("btn");
+  // button.className = "btn-close";
+  // button.addEventListener("click", () => {
+  //   deleteNotes(idInput);
+  // });
+  // button.textContent = "Delete Note";
 
   // cards.appendChild(id)
 
   cards.appendChild(title);
   cards.appendChild(paragraph);
-  cards.appendChild(button);
+  // cards.appendChild(button);
   document.getElementById("notes").appendChild(cards);
 }
 
 function displaymodal(modalTitle, modalBody, idInput) {
   // alert(modalTitle)
+  displayOverlay(true);
   const modal = document.createElement("section");
   modal.className = "modal";
-  modal.style = "z-index:5"
+  modal.style = "z-index:7";
+
   const title = document.createElement("h1");
   title.textContent = modalTitle;
 
-  const body = document.createElement("p")
-  body.innerHTML = highlightSyntax(modalBody)
+  const body = document.createElement("p");
+  body.innerHTML = highlightSyntax(modalBody);
 
-  const close = document.createElement("button");
-  close.className = "btn-close";
-  close.textContent = "Close Modal";
-  close.addEventListener("click", () => {
+  const deleteNote = document.createElement("button");
+  deleteNote.className = "btn-delete";
+  deleteNote.textContent = "Delete Note";
+  deleteNote.addEventListener("click", () => {
     modal.remove();
-    // deleteNotes(idInput)
+    deleteNotes(idInput);
   });
 
-  
-  modal.appendChild(close);
+  const closeNote = document.createElement("button");
+
+  closeNote.className = "btn-close";
+  closeNote.textContent = "Close";
+  closeNote.addEventListener("click", () => {
+    displayOverlay(false);
+    modal.remove();
+  });
+
+  modal.appendChild(closeNote);
+  modal.appendChild(deleteNote);
   modal.appendChild(title);
-  modal.appendChild(body)
+  modal.appendChild(body);
   document.getElementById("cardModal").appendChild(modal);
 }
 
@@ -296,7 +328,7 @@ let color = "";
 
 async function getColor() {
   try {
-    let data = await fetch("http://localhost:3000/api/color");
+    let data = await fetch("http://localhost:4000/api/color");
     let json = await data.json();
     color = `#${json}`;
     document.getElementById("color").value = color;
@@ -310,7 +342,7 @@ getColor();
 async function setColor() {
   let color = document.getElementById("color").value;
   try {
-    let data = await fetch("http://localhost:3000/api/color", {
+    let data = await fetch("http://localhost:4000/api/color", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

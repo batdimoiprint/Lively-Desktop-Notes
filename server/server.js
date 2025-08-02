@@ -1,7 +1,7 @@
 const { log } = require("console");
 const http = require("http");
 const fs = require("fs");
-const port = 3000;
+const port = 4000;
 
 const server = http.createServer((req, res) => {
   // Handling Routings for Get and Post
@@ -180,7 +180,7 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end("Updated color");
   }
-});
+})
 
 server.listen(port, () => {
   // log(`Server running on port ${port}`);
