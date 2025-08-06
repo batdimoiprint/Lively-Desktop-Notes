@@ -8,17 +8,30 @@
   </head>
   <body>
     <main class="screen">
-      <section id="overlay">
-
-      </section>
+      <section id="overlay"></section>
       <section class="header">
         <div class="header-top">
           <h1>Lively Desktop Notes</h1>
           <div class="color-controls">
-            <button type="button" class="btn" id="colorToggleBtn" onclick="toggleColorInput()">Matrix Color</button>
-            <div id="colorInputContainer" style="display: none;">
-              <input type="text" name="color" max="8" id="color" placeholder="#ffffff" />
-              <button type="button" class="btn" onclick="setColor()">Apply</button>
+            <button
+              type="button"
+              class="btn"
+              id="colorToggleBtn"
+              onclick="toggleColorInput()"
+            >
+              Matrix Color
+            </button>
+            <div id="colorInputContainer" style="display: none">
+              <input
+                type="text"
+                name="color"
+                max="8"
+                id="color"
+                placeholder="#ffffff"
+              />
+              <button type="button" class="btn" onclick="setColor()">
+                Apply
+              </button>
             </div>
           </div>
         </div>
@@ -48,15 +61,35 @@
           ></textarea>
 
           <button type="submit" class="btn" id="submitBtn">Add Notes</button>
-          <button type="button" class="btn" id="toggleBtn" onclick="toggleMode()">Switch to Tasks</button>
+          <button
+            type="button"
+            class="btn"
+            id="toggleBtn"
+            onclick="toggleMode()"
+          >
+            Switch to Tasks
+          </button>
         </form>
+      </section>
+      <section class="command">
+        <div>
+          <label for="">Git Bash</label>
+          <input id="command" type="text" placeholder="command" />
+          <button class="btn" type="submit" onclick="sendCommand()">
+            Run Command
+          </button>
+        </div>
+        <div class="status">
+          <h4>Status:</h4>
+          <p id="statusOutput"></p>
+          <button class="btn">Show Output</button>
+        </div>
       </section>
       <section class="card-container" id="notes"></section>
       <section class="matrix">
         <canvas id="c"></canvas>
       </section>
       <section class="modal-container" id="cardModal"></section>
-      
     </main>
   </body>
   <script src="script.js"></script>

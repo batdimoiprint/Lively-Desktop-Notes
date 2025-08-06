@@ -1,6 +1,8 @@
 const { log } = require("console");
 const http = require("http");
 const fs = require("fs");
+const { exec } = require("child_process");
+const { stdout } = require("process");
 const port = 4000;
 
 const server = http.createServer((req, res) => {
@@ -150,6 +152,7 @@ const server = http.createServer((req, res) => {
     });
   }
 
+  // New Color
   if (req.method === "POST" && req.url === "/api/color") {
     let body = "";
     req.on("data", (chunk) => {
@@ -180,7 +183,41 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end("Updated color");
   }
-})
+
+  // Fetch and Run Command
+  if (req.method === "POST" && req.url === "/api/command") {
+    let body = "";
+    const gitBashPath = `"C:\\Program Files\\Git\\bin\\bash.exe"`;
+    let bashCommand = ``;
+
+    req.on("data", (chunk) => {
+      body += chunk;
+      log("insinde" + body);
+    });
+
+    async function runCommand(params) {
+      return bashCommand = `${gitBashPath}  -c "echo cd ~/Development"`
+    }
+
+    log("outside " + body);
+
+    exec(bashCommand, (error, stdout, stderr) => {
+      if (error) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        log(`Error ${error}`);
+        res.end(JSON.stringify(error));
+      } else if (stderr) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        log(`stderr ${stderr}`);
+        res.end(JSON.stringify(stderr));
+      } else {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        // log(`Outupt: \n${stdout}`);
+        res.end(JSON.stringify(stdout));
+      }
+    });
+  }
+});
 
 server.listen(port, () => {
   // log(`Server running on port ${port}`);
