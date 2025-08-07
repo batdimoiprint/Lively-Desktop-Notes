@@ -216,38 +216,39 @@ const server = http.createServer((req, res) => {
     });
   }
 
-// Create project via vite command
-if (req.method === "POST" && req.url === "/api/create-project") {
-  let body = "";
+  // Create project via vite command
+  if (req.method === "POST" && req.url === "/api/create-project") {
+    let body = "";
 
-  req.on("data", (chunk) => {
-    body += chunk;
-  });
-
-  req.on("end", () => {
-    const data = JSON.parse(body);
-    log(data.projectName + data.stack);
-
-    const gitBashPath = `"C:\\Program Files\\Git\\bin\\bash.exe"`;
-    let bashCommand = `${gitBashPath} -c "cd ~/Development && npm create vite@latest ${data.projectName} -- --template ${data.stack} "`;
-
-    exec(bashCommand, (error, stdout, stderr) => {
-      if (error) {
-        res.writeHead(400, { "Content-Type": "application/json" });
-        log(`Error ${error}`);
-        res.end(JSON.stringify(error.message));
-      } else if (stderr) {
-        res.writeHead(400, { "Content-Type": "application/json" });
-        log(`stderr ${stderr}`);
-        res.end(JSON.stringify(stderr));
-      } else {
-        res.writeHead(200, { "Content-Type": "text/plain" });
-        log(`Output: \n${stdout}`);
-        res.end(JSON.stringify("Success"));
-      }
+    req.on("data", (chunk) => {
+      body += chunk;
     });
-  });
-}
+
+    req.on("end", () => {
+      const data = JSON.parse(body);
+      log(data.projectName + data.stack);
+
+      const gitBashPath = `"C:\\Program Files\\Git\\bin\\bash.exe"`;
+      let bashCommand = `${gitBashPath} -c "cd ~/Development && npm create vite@latest ${data.projectName} -- --template ${data.stack} "`;
+
+      exec(bashCommand, (error, stdout, stderr) => {
+        if (error) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          log(`Error ${error}`);
+          res.end(JSON.stringify(error.message));
+        } else if (stderr) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          log(`stderr ${stderr}`);
+          res.end(JSON.stringify(stderr));
+        } else {
+          res.writeHead(200, { "Content-Type": "text/plain" });
+          log(`Output: \n${stdout}`);
+          exec(`cd ../ && code ${data.projectName}`, () => {});
+          res.end(JSON.stringify("Project created successfully"));
+        }
+      });
+    });
+  }
 });
 
 server.listen(port, () => {
