@@ -217,23 +217,24 @@ async function postNotes() {
   }
 }
 
-function highlightSyntax(text) {
-  let highlightedText = text;
+// Deprecated
+// function highlightSyntax(text) {
+//   let highlightedText = text;
 
-  // Process each keyword category
-  Object.entries(keywordPatterns).forEach(([className, keywords]) => {
-    keywords.forEach((keyword) => {
-      // Create regex pattern to match whole words only
-      const pattern = new RegExp(`\\b${keyword}\\b`, "g");
-      highlightedText = highlightedText.replace(
-        pattern,
-        `<span class="${className}">${keyword}</span>`
-      );
-    });
-  });
+//   // Process each keyword category
+//   Object.entries(keywordPatterns).forEach(([className, keywords]) => {
+//     keywords.forEach((keyword) => {
+//       // Create regex pattern to match whole words only
+//       const pattern = new RegExp(`\\b${keyword}\\b`, "g");
+//       highlightedText = highlightedText.replace(
+//         pattern,
+//         `<span class="${className}">${keyword}</span>`
+//       );
+//     });
+//   });
 
-  return highlightedText;
-}
+//   return highlightedText;
+// }
 
 function displayOverlay(isOpen) {
   const overlayContainer = document.getElementById("overlay");
@@ -262,7 +263,7 @@ function displayNotes(titleInput, bodyInput, idInput) {
   const title = document.createElement("h1");
   title.textContent = titleInput;
   title.addEventListener("click", () => {
-    displaymodal(titleInput, bodyInput, idInput);
+    displayModal(titleInput, bodyInput, idInput);
   });
 
   // ID Debug
@@ -272,7 +273,8 @@ function displayNotes(titleInput, bodyInput, idInput) {
   paragraphContainer.className = "paragraph-container";
 
   const paragraph = document.createElement("p");
-  paragraph.innerHTML = highlightSyntax(bodyInput);
+  paragraph.innerHTML = bodyInput;
+  // paragraph.innerHTML = highlightSyntax(bodyInput);
 
   const checkBox = document.createElement("input");
   checkBox.type = "checkbox";
@@ -287,7 +289,7 @@ function displayNotes(titleInput, bodyInput, idInput) {
   document.getElementById("notes").appendChild(cards);
 }
 
-function displaymodal(modalTitle, modalBody, idInput) {
+function displayModal(modalTitle, modalBody, idInput) {
   // alert(modalTitle)
   displayOverlay(true);
   const modal = document.createElement("section");
@@ -298,7 +300,8 @@ function displaymodal(modalTitle, modalBody, idInput) {
   title.textContent = modalTitle;
 
   const body = document.createElement("p");
-  body.innerHTML = highlightSyntax(modalBody);
+  body.innerHTML = modalBody;
+  // body.innerHTML = highlightSyntax(modalBody);
 
   const deleteNote = document.createElement("button");
   deleteNote.className = "btn-delete";
@@ -308,6 +311,12 @@ function displaymodal(modalTitle, modalBody, idInput) {
     deleteNotes(idInput);
   });
 
+  if (modalTitle === "Output") {
+    deleteNote.style.visibility = "hidden";
+  } else {
+    deleteNote.style.visibility = "visible";
+  }
+
   const closeNote = document.createElement("button");
 
   closeNote.className = "btn-close";
@@ -315,6 +324,7 @@ function displaymodal(modalTitle, modalBody, idInput) {
   closeNote.addEventListener("click", () => {
     displayOverlay(false);
     modal.remove();
+    // window.location.reload();
   });
 
   modal.appendChild(closeNote);
@@ -365,26 +375,40 @@ async function setColor() {
 async function sendCommand() {
   const bash = document.getElementById("command").value;
   const status = document.getElementById("statusOutput");
-  try {
-    let data = await fetch("http://localhost:4000/api/command", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        command: bash,
-      }),
-    });
-    let responseStatus = await data.status;
-    if ((responseStatus = 200)) {
-      status.textContent = "Success";
-    } else {
-      status.textContent = `Error: ${data.status}`;
+  if (bash == "") {
+    status.textContent = "Command Required";
+  } else {
+    try {
+      let data = await fetch("http://localhost:4000/api/command", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          command: bash,
+        }),
+      });
+      let responseStatus = await data.status;
+      if ((responseStatus = 200)) {
+        status.textContent = "Success: " + responseStatus;
+      } else {
+        status.textContent = `Error: ${data.status}`;
+      }
+      let response = await data.json();
+      let body = response;
+      // Remove any existing event listeners by cloning the element
+      const outputBtn = document.getElementById("output");
+      const newOutputBtn = outputBtn.cloneNode(true);
+      outputBtn.parentNode.replaceChild(newOutputBtn, outputBtn);
+
+      // Add the new event listener
+      newOutputBtn.addEventListener("click", () => {
+        displayModal("Output", body);
+      });
+    } catch (error) {
+      console.log(error);
     }
-    let response = await data.json();
-    console.log(JSON.stringify(response));
-  } catch (error) {
-    console.log(error);
   }
 }
+
 var root = {
   wavecolor: {
     r: 125,

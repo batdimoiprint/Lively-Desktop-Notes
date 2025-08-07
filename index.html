@@ -72,9 +72,9 @@
         </form>
       </section>
       <section class="command">
-        <div>
-          <label for="">Git Bash</label>
-          <input id="command" type="text" placeholder="command" />
+        <div class="form">
+          <h4>Git Bash</h4>
+          <input id="command" required type="text" placeholder="command" />
           <button class="btn" type="submit" onclick="sendCommand()">
             Run Command
           </button>
@@ -82,7 +82,7 @@
         <div class="status">
           <h4>Status:</h4>
           <p id="statusOutput"></p>
-          <button class="btn">Show Output</button>
+          <button id="output" class="btn">Show Output</button>
         </div>
       </section>
       <section class="card-container" id="notes"></section>

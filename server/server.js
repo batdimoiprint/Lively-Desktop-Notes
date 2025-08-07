@@ -187,34 +187,32 @@ const server = http.createServer((req, res) => {
   // Fetch and Run Command
   if (req.method === "POST" && req.url === "/api/command") {
     let body = "";
-    const gitBashPath = `"C:\\Program Files\\Git\\bin\\bash.exe"`;
-    let bashCommand = ``;
 
     req.on("data", (chunk) => {
       body += chunk;
-      log("insinde" + body);
-    });
+      data = JSON.parse(body);
 
-    async function runCommand(params) {
-      return bashCommand = `${gitBashPath}  -c "echo cd ~/Development"`
-    }
+      log(data.command);
 
-    log("outside " + body);
+      const gitBashPath = `"C:\\Program Files\\Git\\bin\\bash.exe"`;
+      // let bashCommand = `${gitBashPath}  -c "echo cd ~/Development && ${data.command}"`;
+      let bashCommand = `${gitBashPath}  -c "echo cd ~/Development && cd .. && ${data.command}"`;
 
-    exec(bashCommand, (error, stdout, stderr) => {
-      if (error) {
-        res.writeHead(400, { "Content-Type": "application/json" });
-        log(`Error ${error}`);
-        res.end(JSON.stringify(error));
-      } else if (stderr) {
-        res.writeHead(400, { "Content-Type": "application/json" });
-        log(`stderr ${stderr}`);
-        res.end(JSON.stringify(stderr));
-      } else {
-        res.writeHead(200, { "Content-Type": "application/json" });
-        // log(`Outupt: \n${stdout}`);
-        res.end(JSON.stringify(stdout));
-      }
+      exec(bashCommand, (error, stdout, stderr) => {
+        if (error) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          log(`Error ${error}`);
+          res.end(JSON.stringify(error));
+        } else if (stderr) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          log(`stderr ${stderr}`);
+          res.end(JSON.stringify(stderr));
+        } else {
+          res.writeHead(200, { "Content-Type": "text/plain" });
+          // log(`Outupt: \n${stdout}`);
+          res.end(JSON.stringify(stdout));
+        }
+      });
     });
   }
 });
