@@ -409,6 +409,26 @@ async function sendCommand() {
   }
 }
 
+async function createProject(stack) {
+  const projectInput = document.getElementById("projectInput").value;
+  const projectStatus = document.getElementById("projectStatus");
+  try {
+    let data = await fetch("http://localhost:4000/api/create-project", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        stack: stack,
+        projectName: projectInput,
+      }),
+    });
+    let response = await data.json();
+    projectStatus.textContent = response;
+    // console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 var root = {
   wavecolor: {
     r: 125,
