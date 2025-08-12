@@ -423,6 +423,10 @@ async function createProject(stack) {
     });
     let response = await data.json();
     projectStatus.textContent = response;
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+
     // console.log(response);
   } catch (error) {
     console.log(error);

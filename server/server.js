@@ -220,8 +220,7 @@ const server = http.createServer((req, res) => {
   if (req.method === "POST" && req.url === "/api/create-project") {
     let body = "";
     const gitBashPath = `"C:\\Program Files\\Git\\bin\\bash.exe"`;
-    let bashCommand = ``
-
+    let bashCommand = ``;
 
     req.on("data", (chunk) => {
       body += chunk;
@@ -233,14 +232,13 @@ const server = http.createServer((req, res) => {
 
       if (data.stack === "react") {
         bashCommand = `${gitBashPath} -c "cd ~/Development && npm create vite@latest ${data.projectName} -- --template ${data.stack} "`;
-      } else if (data.stack === 'nodejs') {
+      } else if (data.stack === "nodejs") {
         bashCommand = `${gitBashPath} -c "cd ~/Development && mkdir ${data.projectName} && cd ${data.projectName} && npm init -y"`;
       } else if (data.stack === "express") {
-        bashCommand = `${gitBashPath} -c "cd ~/Development && mkdir ${data.projectName} && cd ${data.projectName} && npm init -y && npm install express"`;  
+        bashCommand = `${gitBashPath} -c "cd ~/Development && mkdir ${data.projectName} && cd ${data.projectName} && npm init -y && npm install express"`;
       }
 
-      
-      log(bashCommand)
+      log(bashCommand);
 
       exec(bashCommand, (error, stdout, stderr) => {
         if (error) {
