@@ -64,6 +64,10 @@ h6 {
   cursor: pointer;
   margin: 0;
 }
+
+h1{
+  font-size: 1.5rem;
+}
 p {
   margin: 0;
 }
@@ -314,6 +318,7 @@ p {
   min-width: 10rem;
   max-width: 15rem;
   max-height: 15rem;
+  font-size: smaller;
 
   padding: 1rem;
   position: relative;
@@ -436,55 +441,4 @@ p {
 
 ::-webkit-scrollbar {
   width: 8px;
-}
-
-/* Keywords */
-.keyword-declaration {
-  color: #dc322f;
-  font-weight: bold;
-}
-
-.keyword-control {
-  color: #859900;
-  font-weight: bold;
-}
-
-.keyword-error {
-  color: #cb4b16;
-  font-weight: bold;
-}
-
-.keyword-function {
-  color: #268bd2;
-  font-weight: bold;
-}
-
-.keyword-primitive {
-  color: #2aa198;
-  font-weight: bold;
-}
-
-.keyword-modifier {
-  color: #b58900;
-  font-weight: bold;
-}
-
-.keyword-loop {
-  color: #6c71c4;
-  font-weight: bold;
-}
-
-.keyword-async {
-  color: #d33682;
-  font-weight: bold;
-}
-
-.keyword-operator {
-  color: #859900;
-  font-weight: bold;
-}
-
-.keyword-preprocessor {
-  color: #cb4b16;
-  font-weight: bold;
 }
