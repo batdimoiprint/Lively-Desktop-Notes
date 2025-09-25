@@ -151,7 +151,7 @@ function displayModal(modalTitle, modalBody, idInput) {
   updateAllButtonColors();
 }
 
-let color = "";
+let color = "#ffffff"; // Default purple color if server is unreachable
 
 async function getColor() {
   try {
@@ -283,44 +283,57 @@ for (var x = 0; x < columns; x++) drops[x] = 1;
 
 // drawing the characters
 function draw() {
-  // Get the BG color based on the current time i.e. rgb(hh, mm, ss)
-  // translucent BG to show trail
+  try {
+    // Get the BG color based on the current time i.e. rgb(hh, mm, ss)
+    // translucent BG to show trail
 
-  ctx.fillStyle = "rgba(0,0,0, 0.05)";
-  ctx.fillRect(0, 0, c.width, c.height);
+    ctx.fillStyle = "rgba(0,0,0, 0.05)";
+    ctx.fillRect(0, 0, c.width, c.height);
 
-  ctx.fillStyle = "#BBB"; // grey text
-  ctx.font = font_size + "px arial";
+    ctx.fillStyle = "#BBB"; // grey text
+    ctx.font = font_size + "px arial";
 
-  // looping over drops
-  for (var i = 0; i < drops.length; i++) {
-    // background color
-    ctx.fillStyle = "black";
-    ctx.fillRect(i * font_size, drops[i] * font_size, font_size, font_size);
-    // a random chinese character to print
-    var text = characters[Math.floor(Math.random() * characters.length)];
-    // x = i * font_size, y = value of drops[i] * font_size
+    // looping over drops
+    for (var i = 0; i < drops.length; i++) {
+      // background color
+      ctx.fillStyle = "black";
+      ctx.fillRect(i * font_size, drops[i] * font_size, font_size, font_size);
+      // a random character to print
+      var text = characters[Math.floor(Math.random() * characters.length)];
+      // x = i * font_size, y = value of drops[i] * font_size
 
-    if (root.rainbow) {
-      hue += hueFw ? 0.01 : -0.01;
-      var rr = Math.floor(127 * Math.sin(root.rainbowSpeed * hue + 0) + 128);
-      var rg = Math.floor(127 * Math.sin(root.rainbowSpeed * hue + 2) + 128);
-      var rb = Math.floor(127 * Math.sin(root.rainbowSpeed * hue + 4) + 128);
-      ctx.fillStyle = "rgba(" + rr + "," + rg + "," + rb + ")";
-    } else {
-      ctx.fillStyle = `${color}`;
+      if (root.rainbow) {
+        hue += hueFw ? 0.01 : -0.01;
+        var rr = Math.floor(127 * Math.sin(root.rainbowSpeed * hue + 0) + 128);
+        var rg = Math.floor(127 * Math.sin(root.rainbowSpeed * hue + 2) + 128);
+        var rb = Math.floor(127 * Math.sin(root.rainbowSpeed * hue + 4) + 128);
+        ctx.fillStyle = "rgba(" + rr + "," + rg + "," + rb + ")";
+      } else {
+        // Use color or fall back to default if empty
+        ctx.fillStyle = color || "#ffffff";
+      }
+
+      ctx.fillText(text, i * font_size, drops[i] * font_size);
+      // Incrementing Y coordinate
+      drops[i]++;
+      // sending the drop back to the top randomly after it has crossed the screen
+      // adding randomness to the reset to make the drops scattered on the Y axis
+      if (drops[i] * font_size > c.height && Math.random() > 0.975) drops[i] = 0;
     }
-
-    ctx.fillText(text, i * font_size, drops[i] * font_size);
-    // Incrementing Y coordinate
-    drops[i]++;
-    // sending the drop back to the top randomly after it has crossed the screen
-    // adding randomness to the reset to make the drops scattered on the Y axis
-    if (drops[i] * font_size > c.height && Math.random() > 0.975) drops[i] = 0;
+  } catch (err) {
+    console.error("Error in draw function:", err);
+    // Continue execution even if part of the function fails
   }
 }
 
-setInterval(draw, root.matrixspeed);
+setInterval(() => {
+  try {
+    draw();
+  } catch (err) {
+    console.error("Matrix animation error:", err);
+    // Even if draw fails, we'll try again next interval
+  }
+}, root.matrixspeed);
 
 function livelyPropertyListener(name, val) {
   switch (name) {
